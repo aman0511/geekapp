@@ -3,3 +3,4 @@ env/
 db_repository/
 search.db/
 whoosh_index/
+.gitignore

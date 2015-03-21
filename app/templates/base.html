@@ -1,8 +1,161 @@
 <html>
+<!DOCTYPE html>
+<html lang="">
+
 <head>
-	
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<title>Know your MPS</title>
+	<link rel="stylesheet" href="/static/stylesheets/bootstrap.min.css">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/static/stylesheets/app.css">
+
+	<!--[if IE]>
+		<script src="https://cdn.jsdelivr.net/html5shiv/3.7.2/html5shiv.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+
 </head>
+
 <body>
-<p>Hello</p>
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">Project name</a>
+			</div>
+			
+			<!--.nav-collapse -->
+		</div>
+	</nav>
+	<div class="nav-side-menu" style="z-index:2000">
+
+		<div class="menu-list">
+
+			<ul id="menu-content" class="menu-content">
+				<li>
+					<a href="#">
+						<i class="fa fa-dashboard fa-lg"></i> Dashboard
+					</a>
+				</li>
+
+				<li data-toggle="collapse" data-target="#products" class="collapsed active">
+					<a href="#"><i class="fa fa-gift fa-lg"></i> UI Elements <span class="arrow"></span></a>
+				</li>
+				<ul class="sub-menu collapse" id="products">
+					<li class="active"><a href="#">CSS3 Animation</a>
+					</li>
+					<li><a href="#">General</a>
+					</li>
+					<li><a href="#">Buttons</a>
+					</li>
+					<li><a href="#">Tabs & Accordions</a>
+					</li>
+					<li><a href="#">Typography</a>
+					</li>
+					<li><a href="#">FontAwesome</a>
+					</li>
+					<li><a href="#">Slider</a>
+					</li>
+					<li><a href="#">Panels</a>
+					</li>
+					<li><a href="#">Widgets</a>
+					</li>
+					<li><a href="#">Bootstrap Model</a>
+					</li>
+				</ul>
+
+
+				<li data-toggle="collapse" data-target="#service" class="collapsed">
+					<a href="#"><i class="fa fa-globe fa-lg"></i> Services <span class="arrow"></span></a>
+				</li>
+				<ul class="sub-menu collapse" id="service">
+					<li>New Service 1</li>
+					<li>New Service 2</li>
+					<li>New Service 3</li>
+				</ul>
+
+
+				<li data-toggle="collapse" data-target="#new" class="collapsed">
+					<a href="#"><i class="fa fa-car fa-lg"></i> New <span class="arrow"></span></a>
+				</li>
+				<ul class="sub-menu collapse" id="new">
+					<li>New New 1</li>
+					<li>New New 2</li>
+					<li>New New 3</li>
+				</ul>
+
+
+				<li>
+					<a href="#">
+						<i class="fa fa-user fa-lg"></i> Profile
+					</a>
+				</li>
+
+				<li>
+					<a href="#">
+						<i class="fa fa-users fa-lg"></i> Users
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="main-content" style="position:relative;top:100px;">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-8 col-md-push-4">
+					<div class="input-group">
+						<div class="input-group-btn search-panel">
+							<button type="button" class="btn btn-lg dropdown-toggle" data-toggle="dropdown">
+								<span id="search_concept">Filter by</span> <span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" role="menu">
+								<li><a href="#name">Name</a>
+								</li>
+								<li><a href="#constituency">Constituency</a>
+								</li>
+								<li><a href="#state">State</a>
+								</li>
+								<li><a href="#session">Session</a>
+								</li>
+								<li class="divider"></li>
+								<li><a href="#all">Anything</a>
+								</li>
+							</ul>
+						</div>
+						<input type="hidden" name="search_param" value="all" id="search_param">
+						<input id="searchbox" type="text" class="form-control input-lg" name="x" placeholder="Search term...">
+						<span class="input-group-btn">
+                    <button class="btn btn-default btn-lg" type="button" onclick="search($('#search_param').val(),$('#searchbox').val())"><span class="glyphicon glyphicon-search" style="padding: 14%;"></span>
+						</button>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="spinner">
+			<i class="fa fa-spinner fa-pulse" style="font-size: 55px;"></i>
+		</div>
+	</div>
+
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	<script src="/static/js/app.js"></script>
+	<script>
+		$(document).ready(function (e) {
+			$('.search-panel .dropdown-menu').find('a').click(function (e) {
+				e.preventDefault();
+				var param = $(this).attr("href").replace("#", "");
+				var concept = $(this).text();
+				$('.search-panel span#search_concept').text(concept);
+				$('.input-group #search_param').val(param);
+			});
+		});
+	</script>
 </body>
-<html>
+
+</html>

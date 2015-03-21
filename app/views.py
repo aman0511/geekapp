@@ -1,13 +1,17 @@
+<<<<<<< HEAD
 import json
 import os
 from flask import render_template, request
+=======
+from flask import Flask, render_template, json, url_for
+>>>>>>> origin/master
 from app import app
 from models import MemberDetails, memberSession
 from app import db
 from flask import Flask, jsonify
 
 
-@app.route('/')
+@app.route('/datainsert/')
 def base():
     SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
     json_url = os.path.join(SITE_ROOT, "static/js", "data.json")
@@ -38,3 +42,8 @@ def search_page():
                                               ("%"+value+"%")).all()
         print data[0].sessions.all()
     return "sucess"
+
+
+@app.route('/index/')
+def index():
+    return render_template('base.html')
