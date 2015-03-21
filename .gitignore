@@ -1,0 +1,5 @@
+env/
+*.pyc
+db_repository/
+search.db/
+whoosh_index/
