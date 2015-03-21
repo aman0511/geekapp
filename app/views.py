@@ -1,10 +1,6 @@
-<<<<<<< HEAD
 import json
 import os
 from flask import render_template, request
-=======
-from flask import Flask, render_template, json, url_for
->>>>>>> origin/master
 from app import app
 from models import MemberDetails, memberSession
 from app import db
