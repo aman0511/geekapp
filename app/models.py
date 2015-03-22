@@ -9,7 +9,7 @@ else:
 
 class MemberDetails(db.Model):
     __tablename__ = "member"
-    __searchable__ = ['name', '']
+    __searchable__ = ['name']
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=True)

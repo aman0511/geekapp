@@ -39,15 +39,26 @@ $('document').ready(function () {
 });
 
 var search = function (parameter,value){
-	 
-	if(parameter){
-		$('#spinner').show();
-		console.log(parameter,value);
-	}
-	
+	 console.log('hello');
+	if(value){
+		data={
+          value: value,
+          parameter: parameter
+        }
+   $.ajax({  
+            url: '/search/page/' ,
+            type: "POST",
+            data: data,
+            success: function(data) {
+              console.log(data);
+              }
+        
+      });
+
+  }
 	
 }
 
 $('#searchbox').change(function(){
-	search(this.value,$('#search_param').val());
+	search($('#search_param').val(), this.value);
 });

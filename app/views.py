@@ -24,20 +24,41 @@ def base():
     return render_template('base.html')
 
 
-@app.route('/search/page/')
+@app.route('/search/page/', methods=['GET', 'POST'])
 def search_page():
-    if 'anything' in request.form:
-        data = MemberDetails.query.whoosh_search('post').un()
-    elif 'name' in request.form:
-        kwargs = dict()
-        kwargs['name'] = 'sha'
-        a = dict()
-        a['name'] = 'name'
-        for key, value in kwargs.iteritems():
-            data = MemberDetails.query.filter(MemberDetails.a[key].like
-                                              ("%"+value+"%")).all()
-        print data[0].sessions.all()
-    return "sucess"
+    if request.method == 'POST':
+        if request.form['parameter'] == "all":
+            datas = MemberDetails.query.whoosh_search('soni').all()
+        elif request.form['parameter'] == "state":
+            datas = MemberDetails.query.filter(MemberDetails.state.like
+                                               ("%"+request.form['value']+"%")
+                                               ).all()
+        elif request.form['parameter'] == "name":
+            datas = MemberDetails.query.filter(MemberDetails.name.like
+                                               ("%"+request.form['value']+"%")
+                                               ).all()
+        elif request.form['parameter'] == "constituency":
+            datas = MemberDetails.query.filter(MemberDetails.constituency.like
+                                               ("%"+request.form['value']+"%")
+                                               ).all()
+        elif request.form['parameter'] == "constituency":
+            datas = MemberDetails.query.filter(MemberDetails.constituency.like
+                                               ("%"+request.form['value']+"%")
+                                               ).all()
+        else:
+            datas = []
+        template_data = render_template('name.html', datas=datas)
+        return jsonify(template_data)
+
+
+        #     output = []
+        #     for data in datas:
+        #         row = {}
+        #         print MemberDetails.__table__.c
+        #         for column in MemberDetails.__table__.columns:
+        #             row[str(column.name)] = getattr(data, str(column.name))
+        #         output.append(row)
+        # return jsonify(result=output)
 
 
 @app.route('/index/')
