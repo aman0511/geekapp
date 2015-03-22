@@ -14,13 +14,49 @@ def base():
     data = json.load(open(json_url))
     for i, data in enumerate(data['data']):
         kwargs = dict()
+        # kwargs['name'] = str(data[2])
+        # kwargs['division_or_seat_no'] = str(data[1])
+        # kwargs['Loksabha'] = str(data[3])
+        # kwargs['state'] = str(data[5])
+        # kwargs['constituency'] = str(data[6])
+        # member = MemberDetails(**kwargs)
         kwargs['id'] = str(data[0])
         kwargs['Loksabha_session'] = str(data[4])
         kwargs['total_sitting'] = str(data[7])
         kwargs['no_days_member_signed_the_register'] = str(data[8])
+        try:
+            total = int(data[7])
+        except:
+            total = 0
+        try:
+            total_sitting = int(data[8])
+        except:
+            total_sitting = 0
+        try:
+            avg = (float(total_sitting)/total)*100
+        except:
+            avg = 0
+
+        kwargs['session_avg'] = str(round(avg, 2))
         member = memberSession(**kwargs)
         db.session.add(member)
         db.session.commit()
+        member = MemberDetails.get_member(int(kwargs['id']))
+        total_sitting = 0
+        total = 0
+        for sess in member.sessions:
+            try:
+                total += int(sess.total_sitting)
+            except:
+                total += 0
+            try:
+                total_sitting += int(sess.no_days_member_signed_the_register)
+            except:
+                total_sitting += 0
+            percentage = (float(total_sitting)/total)*100
+            member.total_avg = percentage
+            db.session.merge(member)
+            db.session.commit()
     return render_template('base.html')
 
 
@@ -43,12 +79,8 @@ def search_page():
                                                ).all()
         else:
             datas = []
-        att_avg = dict()
-        for data in datas:
-            attendnace_avg(data)
         template_data = {}
         template_data['html'] = render_template('name.html', datas=datas)
-        template_data['avg'] = att_avg
         return jsonify(template_data)
 
 
@@ -91,24 +123,3 @@ def auto_listing():
         #     output.append(row)
         return jsonify(result=tags)
 
-
-def attendnace_avg(data):
-    total_attend = 0
-    total = 0
-    for attend in data.sessions:
-        try:
-            print attend.no_days_member_signed_the_register
-            total_attend += int(attend.no_days_member_signed_the_register)
-            print "hello"+total_attend
-        except:
-            total_attend += 0
-        try:
-            total += int(attend.total_sitting)
-        except:
-            total += 0
-        attend.session_avg = str(round((int(attend.no_days_member_signed_the_register)/float(attend.total_sitting))*100,2))
-        db.session.merge(attend)
-        db.session.commit()
-    data.total_avg = str(round((float(total_attend) / total)*100, 2))
-    db.session.merge(data)
-    db.session.commit()
