@@ -1,3 +1,4 @@
+var availableTags = [];
 $('document').ready(function () {
 	var $loading = $('#spinner').hide();
 	$(document)
@@ -7,37 +8,12 @@ $('document').ready(function () {
 		.ajaxStop(function () {
 			$loading.hide();
 		});
-  $('[data-toggle=offcanvas]').click(function() {
-    $('.row-offcanvas').toggleClass('active');
-  });
-	var availableTags = [ "ActionScript",
-      "AppleScript",
-      "Asp",
-      "BASIC",
-      "C",
-      "C++",
-      "Clojure",
-      "COBOL",
-      "ColdFusion",
-      "Erlang",
-      "Fortran",
-      "Groovy",
-      "Haskell",
-      "Java",
-      "JavaScript",
-      "Lisp",
-      "Perl",
-      "PHP",
-      "Python",
-      "Ruby",
-      "Scala",
-      "Scheme"
-    ];
-	$("#searchbox").autocomplete({
-		source: availableTags
+	$('[data-toggle=offcanvas]').click(function () {
+		$('.row-offcanvas').toggleClass('active');
 	});
+	
+	
 });
-
 var search = function (parameter,value){
 	 console.log('hello');
 	if(value){
@@ -50,7 +26,9 @@ var search = function (parameter,value){
             type: "POST",
             data: data,
             success: function(data) {
-              console.log(data);
+              console.log(data['html']);
+              $("#result").html("");
+              $("#result").html(data['html']);
               }
         
       });
@@ -61,4 +39,5 @@ var search = function (parameter,value){
 
 $('#searchbox').change(function(){
 	search($('#search_param').val(), this.value);
+
 });

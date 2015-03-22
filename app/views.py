@@ -31,7 +31,7 @@ def search_page():
             datas = MemberDetails.query.whoosh_search('soni').all()
         elif request.form['parameter'] == "state":
             datas = MemberDetails.query.filter(MemberDetails.state.like
-                                               ("%"+request.form['value']+"%")
+                                               (request.form['value']+"%")
                                                ).all()
         elif request.form['parameter'] == "name":
             datas = MemberDetails.query.filter(MemberDetails.name.like
@@ -41,13 +41,11 @@ def search_page():
             datas = MemberDetails.query.filter(MemberDetails.constituency.like
                                                ("%"+request.form['value']+"%")
                                                ).all()
-        elif request.form['parameter'] == "constituency":
-            datas = MemberDetails.query.filter(MemberDetails.constituency.like
-                                               ("%"+request.form['value']+"%")
-                                               ).all()
         else:
             datas = []
-        template_data = render_template('name.html', datas=datas)
+        print datas
+        template_data = {}
+        template_data['html'] = render_template('name.html', datas=datas)
         return jsonify(template_data)
 
 
@@ -64,3 +62,29 @@ def search_page():
 @app.route('/index/')
 def index():
     return render_template('base.html')
+
+
+@app.route('/list/', methods=['GET', 'POST'])
+def auto_listing():
+    if request.method == 'POST':
+        if request.form['parameter'] == "all":
+            datas = MemberDetails.query.whoosh_search('soni').all()
+        elif request.form['parameter'] == "state":
+            datas = MemberDetails.query.with_entities(MemberDetails.state.distinct()).all()
+        elif request.form['parameter'] == "name":
+            datas = MemberDetails.query.with_entities(MemberDetails.name.distinct()).all()
+        elif request.form['parameter'] == "constituency":
+            datas = MemberDetails.query.with_entities(MemberDetails.constituency.distinct()).all()
+        else:
+            datas = []
+        tags = []
+        for data in datas:
+            tags.append(data[0])
+        print tags
+        # for data in datas:
+        #     row = {}
+        #     print MemberDetails.__table__.c
+        #     for column in MemberDetails.__table__.columns:
+        #         row[str(column.name)] = getattr(data, str(column.name))
+        #     output.append(row)
+        return jsonify(result=tags)

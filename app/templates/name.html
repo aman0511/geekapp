@@ -1,0 +1,25 @@
+<div class="row" style="margin-top:30px">
+	<div class="col-sm-8 col-sm-push-4 col-md-10 col-md-push-2">
+	{% for data in datas %}
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">{{data.name}}</h3>
+				<h3 class="text-success pull-right">36%</h3>
+			</div>
+			<div class="panel-body">
+				<dl class="dl-horizontal  col-md-9">
+					<dt>Constituency:</dt>
+					<dd>{{data.constituency}}</dd>
+					<dt>State:</dt>
+					<dd>{{data.state}}</dd>
+					<dt>Seat No.</dt>
+					<dd>{{data.division_or_seat_no}}</dd>
+					<dt>Loksabha</dt>
+					<dd>{{data.Loksabha}}th</dd>
+				</dl>
+
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+</div>
