@@ -4,7 +4,7 @@
 		<div class="panel panel-primary">
 			<div class="panel-heading">
 				<h3 class="panel-title"><a href="/person/{{data.id}}">{{data.name}} </a></h3>
-				<h3 id="avg-{{data.id}}" class="text-success pull-right">{{data.total_avg}}</h3>
+				<h3 id="avg-{{data.id}}" class="text-success pull-right">{{data.total_avg|float|round(1)}} %</h3>
 			</div>
 			<div class="panel-body">
 				<dl class="dl-horizontal  col-md-9">
@@ -19,7 +19,6 @@
 				</dl>
 				<div id="table-{{data.id}}"></div>
 				<div id="chart-{{data.id}}">
-					{% include 'graph.html' %}
 				</div>
 			</div>
 		</div>
