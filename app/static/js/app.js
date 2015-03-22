@@ -29,7 +29,13 @@ var search = function (parameter,value){
               console.log(data['html']);
               $("#result").html("");
               $("#result").html(data['html']);
+              avg = data['avg'];
+              console.log(avg);
+              for(key in avg ) {
+                $("#avg-"+key).html("");
+                $("#avg-"+key).html(avg[key]);
               }
+            }
         
       });
 

@@ -43,9 +43,14 @@ def search_page():
                                                ).all()
         else:
             datas = []
-        print datas
+        att_avg = dict()
+        for data in datas:
+            avg = attendnace_avg(data)
+            att_avg[str(data.id)] = avg
         template_data = {}
+        print att_avg
         template_data['html'] = render_template('name.html', datas=datas)
+        template_data['avg'] = att_avg
         return jsonify(template_data)
 
 
@@ -79,7 +84,7 @@ def auto_listing():
             datas = []
         tags = []
         for data in datas:
-            tags.append(data[0])
+            tags.append(data[0].strip())
         print tags
         # for data in datas:
         #     row = {}
@@ -88,3 +93,20 @@ def auto_listing():
         #         row[str(column.name)] = getattr(data, str(column.name))
         #     output.append(row)
         return jsonify(result=tags)
+
+
+def attendnace_avg(data):
+    total_attend = 0
+    total = 0
+    for attend in data.sessions:
+        try:
+            print attend.no_days_member_signed_the_register
+            total_attend += int(attend.no_days_member_signed_the_register)
+            print "hello"+total_attend
+        except:
+            total_attend += 0
+        try:
+            total += int(attend.total_sitting)
+        except:
+            total += 0
+    return round((float(total_attend) / total)*100, 2)
