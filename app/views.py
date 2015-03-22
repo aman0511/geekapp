@@ -48,7 +48,6 @@ def search_page():
             avg = attendnace_avg(data)
             att_avg[str(data.id)] = avg
         template_data = {}
-        print att_avg
         template_data['html'] = render_template('name.html', datas=datas)
         template_data['avg'] = att_avg
         return jsonify(template_data)
@@ -84,8 +83,7 @@ def auto_listing():
             datas = []
         tags = []
         for data in datas:
-            tags.append(data[0].strip())
-        print tags
+            tags.append(data[0].rstrip())
         # for data in datas:
         #     row = {}
         #     print MemberDetails.__table__.c
