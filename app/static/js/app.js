@@ -26,7 +26,6 @@ var search = function (parameter,value){
             type: "POST",
             data: data,
             success: function(data) {
-              console.log(data['html']);
               $("#result").html("");
               $("#result").html(data['html']);
             }
@@ -46,9 +45,10 @@ function person(url){
             data: data,
             success: function(data) {
 				html=data;
-              console.log(html['html']);
-              $("#table").html("");
-              $("#table").html(html['html']);
+				for(key in html){
+					$('#table-'+key).html("");
+					$('#table-'+key).html(html[key]);
+				}
             }
         
       });

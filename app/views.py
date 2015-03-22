@@ -117,6 +117,4 @@ def attendnace_avg(data):
 def person(id):
 	member = MemberDetails.get_member(int(id))
 	print member.sessions
-	template_data = dict()
-	template_data['html'] = render_template('table.html',person=member)
-	return jsonify(template_data)
+	return render_template('person.html',person=member)
