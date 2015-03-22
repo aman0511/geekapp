@@ -1,10 +1,22 @@
 import json
 import os
-from flask import render_template, request
-from app import app
-from models import MemberDetails, memberSession
+from flask import render_template, request, g, url_for, redirect
+from app import app, lm
+from models import MemberDetails, memberSession, User
 from app import db
 from flask import Flask, jsonify
+from flask.ext.login import login_user, current_user, logout_user, \
+                     login_required
+from oauth import OAuthSignIn
+
+@lm.user_loader
+def load_user(id):
+    return User.query.get(id)
+
+
+@app.before_request
+def before_request():
+    g.user = current_user
 
 
 @app.route('/datainsert/')
@@ -82,6 +94,7 @@ def search_page():
         template_data = {}
         template_data['html'] = render_template('name.html', datas=datas)
         return jsonify(template_data)
+    return "404"
 
 
         #     output = []
@@ -123,3 +136,53 @@ def auto_listing():
         #     output.append(row)
         return jsonify(result=tags)
 
+
+@app.route('/no_of_analaysis/')
+def data_analaysis():
+    sessions = db.session.query(memberSession.Loksabha_session.distinct()).all()
+    kwargs =dict()
+    for sessions in sessions:
+        kwargs[sessions.Loksabha_session] = sessions.Loksabha_session
+    print kwargs
+    return "sucees"
+
+
+@app.route('/authorize/<provider>', methods=['GET', 'POST'])
+def oauth_authorize(provider=None):
+    if not g.user.is_anonymous():
+        return redirect(url_for('index'))
+    else:
+        oauth = OAuthSignIn.get_provider(provider)
+        return oauth.authorize()
+
+
+@app.route('/callback/<provider>')
+def oauth_callback(provider):
+    if not g.user.is_anonymous():
+        return redirect(url_for('home'))
+    oauth = OAuthSignIn.get_provider(provider)
+    me = oauth.callback()
+    kwargs = dict()
+    kwargs['email'] = me['email']
+    kwargs['social_id'] = me['id']
+    kwargs['name'] = me['name']
+    user = User.authenticate_user(**kwargs)
+    if user:
+        login_user(user)
+        return redirect(url_for('index'))
+    else:
+        try:
+            user = User(**kwargs)
+            login_user(user, True)
+            db.session.add(user)
+            db.session.commit()
+        except Exception as e:
+            print e
+        return redirect(url_for('index'))
+
+
+@app.route('/logout')
+def logout():
+    ''' logout view '''
+    logout_user()
+    return redirect(url_for('index'))

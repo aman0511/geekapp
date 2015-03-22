@@ -1,5 +1,6 @@
 from app import db, app
 import sys
+from flask.ext.login import UserMixin
 if sys.version_info >= (3, 0):
     enable_search = False
 else:
@@ -61,3 +62,42 @@ class memberSession(db.Model):
                 setattr(self, key, value)
             except:
                 MemberDetails.errors = "empty field"
+
+
+class User(db.Model, UserMixin):
+    ''' User Table containing all primary data  '''
+
+    __tablename__ = "user"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), index=True, nullable=False)
+    social_id = db.Column(db.String(255), nullable=True, unique=True)
+    email = db.Column(db.String(255), index=True, nullable=False)
+    errors = {}
+
+    def __init__(self, **kwargs):
+        for key, value in kwargs.iteritems():
+            try:
+                setattr(self, key, value)
+            except:
+                # Returns a dictionary of empty field errors
+                User.errors[key] = "empty Field"
+
+    @staticmethod
+    def get_user(token=None):
+        """returns user object for a specific user"""
+        if token:
+            return db.session.query(User).filter_by(
+                social_id=token).first()
+
+    @staticmethod
+    def authenticate_user(**kwargs):
+        """ authenticates a user and also enforces validations"""
+        if kwargs['social_id']:
+            user = User.get_user(token=kwargs['social_id'])
+            if user:
+                return user
+            return
+        else:
+            User.errors['social_id'] = "AUTHENTICATION_FAIL"
+            return
