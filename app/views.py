@@ -79,7 +79,7 @@ def auto_listing():
             datas = []
         tags = []
         for data in datas:
-            tags.append(data[0])
+            tags.append(data[0].rstrip())
         print tags
         # for data in datas:
         #     row = {}
