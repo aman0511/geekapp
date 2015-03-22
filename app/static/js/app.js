@@ -7,10 +7,10 @@ $('document').ready(function () {
 		.ajaxStop(function () {
 			$loading.hide();
 		});
-  $('[data-toggle=offcanvas]').click(function() {
-    $('.row-offcanvas').toggleClass('active');
-  });
-	var availableTags = [ "ActionScript",
+	$('[data-toggle=offcanvas]').click(function () {
+		$('.row-offcanvas').toggleClass('active');
+	});
+	var availableTags = ["ActionScript",
       "AppleScript",
       "Asp",
       "BASIC",
@@ -38,16 +38,13 @@ $('document').ready(function () {
 	});
 });
 
-var search = function (parameter,value){
-	 
-	if(parameter){
-		$('#spinner').show();
-		console.log(parameter,value);
-	}
-	
-	
+var search = function (parameter, value) {
+
+	if (parameter) {}
+
+
 }
 
-$('#searchbox').change(function(){
-	search(this.value,$('#search_param').val());
+$('#searchbox').change(function () {
+	search(this.value, $('#search_param').val());
 });
