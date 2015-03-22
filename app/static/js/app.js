@@ -26,7 +26,6 @@ var search = function (parameter,value){
             type: "POST",
             data: data,
             success: function(data) {
-              console.log(data['html']);
               $("#result").html("");
               $("#result").html(data['html']);
             }
@@ -35,6 +34,24 @@ var search = function (parameter,value){
 
   }
 	
+}
+
+
+function person(url){
+	console.log(url);
+	$.ajax({  
+            url:  url,
+            type: "POST",
+            data: data,
+            success: function(data) {
+				html=data;
+				for(key in html){
+					$('#table-'+key).html("");
+					$('#table-'+key).html(html[key]);
+				}
+            }
+        
+      });
 }
 
 $('#searchbox').change(function(){

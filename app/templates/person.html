@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block detail %}
+	<div class="row">
+		<div class="col-sm-push-3 col-sm-9 col-md-10 col-md-push-2">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title"><a href="/person/{{person.id}}">{{person.name}} </a></h3>
+				<h3 id="avg-{{person.id}}" class="text-success pull-right">{{person.total_avg|float|round(1)}} %</h3>
+			</div>
+			<div class="panel-body">
+				<dl class="dl-horizontal  col-md-9">
+					<dt>Constituency:</dt>
+					<dd>{{person.constituency}}</dd>
+					<dt>State:</dt>
+					<dd>{{person.state}}</dd>
+					<dt>Seat No.</dt>
+					<dd>{{person.division_or_seat_no}}</dd>
+					<dt>Loksabha</dt>
+					<dd>{{person.Loksabha}}th</dd>
+				</dl>
+				<div id="table-{{person.id}}"></div>
+				<div id="chart-{{person.id}}">
+				</div>
+			</div>
+		</div>
+		</div>
+	</div>
+<div class="row">
+		<div class="col-sm-push-3 col-sm-9 col-md-10 col-md-push-2">
+{% include 'table.html' %}
+	</div>
+</div>
+<div class="row" style="max-height:300px;margin-top:80px;">
+				<div class="col-sm-push-3 col-sm-9 col-md-10 col-md-push-2">
+
+					{% include 'discretebargraph.html' %}
+
+
+				</div>
+			</div>
+			<hr>
+{% endblock detail %}

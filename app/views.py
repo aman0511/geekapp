@@ -140,7 +140,7 @@ def auto_listing():
 @app.route('/no_of_analaysis/')
 def data_analaysis():
     sessions = db.session.query(memberSession.Loksabha_session.distinct()).all()
-    kwargs =dict()
+    kwargs = dict()
     for sessions in sessions:
         kwargs[sessions.Loksabha_session] = sessions.Loksabha_session
     print kwargs
@@ -186,3 +186,16 @@ def logout():
     ''' logout view '''
     logout_user()
     return redirect(url_for('index'))
+
+
+@app.route('/person/<id>',methods=['GET','POST'])
+def person(id):
+	member = MemberDetails.get_member(int(id))
+	datas = MemberDetails.query.with_entities(MemberDetails.name.distinct()).all()
+	graphdata = dict()
+	for sessions in member.sessions:
+		graphdata[sessions.Loksabha_session]=sessions.no_days_member_signed_the_register
+	print graphdata
+	return render_template('person.html',person=member,graphdata=graphdata)
+
+

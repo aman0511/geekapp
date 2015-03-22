@@ -1,0 +1,43 @@
+<div id="chart1" class="panel">
+    <svg></svg>
+</div>
+
+<script>
+	var temp = {{graphdata|tojson|safe}};
+	var element = {}, cart = [];
+	for ( key in {{graphdata|tojson|safe}} ){
+		element.label = key;
+		element.value = temp[key];
+		cart.push(element);
+	}
+	//console.log(values['label'],values['values']);
+	
+
+    historicalBarChart = [
+        {
+            key: "Attendance in Sessions",
+            values:cart
+        }
+    ];
+
+    nv.addGraph(function() {
+        var chart = nv.models.discreteBarChart()
+            .x(function(d) { return d.label })
+            .y(function(d) { return d.value })
+            .staggerLabels(true)
+            //.staggerLabels(historicalBarChart[0].values.length > 8)
+            .tooltips(false)
+            .showValues(true)
+            .duration(250)
+            ;
+
+        d3.select('#chart1 svg')
+            .datum(historicalBarChart)
+            .call(chart);
+
+        nv.utils.windowResize(chart.update);
+        return chart;
+    });
+
+
+</script>

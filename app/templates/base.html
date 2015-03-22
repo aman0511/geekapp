@@ -11,12 +11,34 @@
 	<link rel="stylesheet" href="/static/stylesheets/bootstrap.min.css">
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+	<link href="/static/build/nv.d3.css" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="/static/stylesheets/app.css">
-
 	<!--[if IE]>
 		<script src="https://cdn.jsdelivr.net/html5shiv/3.7.2/html5shiv.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js"></script>
+	<script src="/static/build/nv.d3.js"></script>
+	<script src="/static/lib/stream_layers.js"></script>
+	<script src="/static/js/app.js"></script>
+	<style>
+		text {
+			font: 12px sans-serif;
+		}
+		
+		.nvd3.nv-pie.nv-chart-donut2 .nv-pie-title {
+			fill: rgba(70, 107, 168, 0.78);
+		}
+		
+		.nvd3.nv-pie.nv-chart-donut1 .nv-pie-title {
+			font-size: 45px;
+			opacity: 0.4;
+			fill: rgba(224, 116, 76, 0.91);
+		}
+	</style>
 
 </head>
 
@@ -28,8 +50,9 @@
 				<div class="social_button">
   <a href="{{ url_for('oauth_authorize', provider='facebook') }}" class="btn btn-block btn-social btn-linkedin"><i class="fa fa-linkedin"></i> Login with Facebook</a>
 </div>
+				<a class="navbar-brand" href="#">KYMP</a>
 			</div>
-			
+
 			<!--.nav-collapse -->
 		</div>
 	</nav>
@@ -108,7 +131,7 @@
 	<div class="main-content" style="position:relative;top:100px;">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-10 col-md-push-2">
+				<div class="col-sm-push-3 col-sm-9 col-md-10 col-md-push-2">
 					<div class="input-group">
 						<div class="input-group-btn search-panel">
 							<button type="button" class="btn btn-lg dropdown-toggle" data-toggle="dropdown">
@@ -129,52 +152,62 @@
 							</ul>
 						</div>
 						<input type="hidden" name="search_param" value="all" id="search_param">
-						<input id="searchbox"  type="text" class="form-control input-lg" name="x" placeholder="Search term...">
+						<input id="searchbox" type="text" class="form-control input-lg" name="x" placeholder="Search term...">
 						<span class="input-group-btn">
-                    <button class="btn btn-default btn-lg" type="button" onclick="search($('#search_param').val(),$('#searchbox').val())"><span class="glyphicon glyphicon-search" style="padding: 14%;"></span>
+                    <button class="btn btn-default btn-lg" type="submit" onclick="search($('#search_param').val(),$('#searchbox').val()); return false;"><span class="glyphicon glyphicon-search" style="padding: 14%;"></span>
 						</button>
 						</span>
 					</div>
 				</div>
 			</div>
-			<div id="result"></div>
+			<div class="row" style="max-height:300px;margin-top:80px;">
+				
+					<div id="result"></div>
+				
+			</div>
+			<div class="inner-content">
+				
+			
+			
+			{% block detail %}
+			{% endblock detail %}
+            </div>
 		</div>
+
 		<div id="spinner">
 			<i class="fa fa-spinner fa-pulse" style="font-size: 55px;"></i>
 		</div>
 	</div>
 
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-	<script src="/static/js/app.js"></script>
+
 	<script>
 		$(document).ready(function (e) {
 			$('.search-panel .dropdown-menu').find('a').click(function (e) {
 				e.preventDefault();
 				$("#searchbox").val("");
+				$('.inner-content').html("");
 				var param = $(this).attr("href").replace("#", "");
 				var concept = $(this).text();
 				$('.search-panel span#search_concept').text(concept);
 				$('.input-group #search_param').val(param);
-				data={
-          			parameter: param
-        		}
-				$.ajax({  
-		            url: '/list/' ,
-		            type: "POST",
-		            data: data,
-		            success: function(data) {
-		            	data = data;
-                        availableTags = data['result'];
-                        $("#searchbox").autocomplete({
-						source: availableTags
+				data = {
+					parameter: param
+				}
+				$.ajax({
+					url: '/list/',
+					type: "POST",
+					data: data,
+					success: function (data) {
+						data = data;
+						availableTags = data['result'];
+						$("#searchbox").autocomplete({
+							source: availableTags
 						});
 						$("#result").html("");
-		              }
-        
-      			});
+					}
+
+				});
 			});
 		});
 	</script>
