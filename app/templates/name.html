@@ -3,8 +3,8 @@
 	{% for data in datas %}
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				<h3 class="panel-title"><a href="/person/{{data.id}}">{{data.name}}</a></h3>
-				<h3 id="avg-{{data.id}}" class="text-success pull-right"></h3>
+				<h3 class="panel-title"><a href="#" onclick="person('/person/{{data.id}}')">{{data.name}} </a></h3>
+				<h3 id="avg-{{data.id}}" class="text-success pull-right">{{data.total_avg}}</h3>
 			</div>
 			<div class="panel-body">
 				<dl class="dl-horizontal  col-md-9">
@@ -17,7 +17,7 @@
 					<dt>Loksabha</dt>
 					<dd>{{data.Loksabha}}th</dd>
 				</dl>
-
+				<div id="table"></div>
 			</div>
 		</div>
 		{% endfor %}

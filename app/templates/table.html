@@ -1,0 +1,20 @@
+<table class="table table-hover table-bordered">
+      <thead>
+        <tr>
+          <th>Session</th>
+          <th>Assembely Held</th>
+          <th>Attended</th>
+          <th>Percentage</th>
+        </tr>
+      </thead>
+      <tbody>
+		  {% for sessions in person.sessions %}
+        <tr>
+          <th scope="row">{{sessions.Loksabha_session}}</th>
+          <td>{{sessions.total_sitting}}</td>
+          <td>{{sessions.no_days_member_signed_the_register}}</td>
+          <td>{{sessions.session_avg}}</td>
+        </tr>
+		  {% endfor %}
+      </tbody>
+    </table>

@@ -21,6 +21,7 @@ class MemberDetails(db.Model):
                                backref=db.backref('MemberDetails',
                                                   lazy='joined'),
                                lazy='dynamic')
+    total_avg = db.Column(db.String(255), nullable=True)
     errors = {}
 
     def __init__(self, **kwargs):
@@ -47,6 +48,7 @@ class memberSession(db.Model):
     Loksabha_session = db.Column(db.String(255), nullable=False)
     speaker_id = db.Column(db.Integer, db.ForeignKey('member.id'))
     total_sitting = db.Column(db.String(255))
+    session_avg = db.Column(db.String(255), nullable=True)
     no_days_member_signed_the_register = db.Column(db.String(255))
     errors = {}
 

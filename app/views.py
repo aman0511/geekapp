@@ -45,8 +45,7 @@ def search_page():
             datas = []
         att_avg = dict()
         for data in datas:
-            avg = attendnace_avg(data)
-            att_avg[str(data.id)] = avg
+            attendnace_avg(data)
         template_data = {}
         template_data['html'] = render_template('name.html', datas=datas)
         template_data['avg'] = att_avg
@@ -107,4 +106,17 @@ def attendnace_avg(data):
             total += int(attend.total_sitting)
         except:
             total += 0
-    return round((float(total_attend) / total)*100, 2)
+        attend.session_avg = str(round((int(attend.no_days_member_signed_the_register)/float(attend.total_sitting))*100,2))
+        db.session.merge(attend)
+        db.session.commit()
+    data.total_avg = str(round((float(total_attend) / total)*100, 2))
+    db.session.merge(data)
+    db.session.commit()
+
+@app.route('/person/<id>',methods=['GET','POST'])
+def person(id):
+	member = MemberDetails.get_member(int(id))
+	print member.sessions
+	template_data = dict()
+	template_data['html'] = render_template('table.html',person=member)
+	return jsonify(template_data)
