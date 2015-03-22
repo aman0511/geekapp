@@ -92,27 +92,6 @@ def auto_listing():
         return jsonify(result=tags)
 
 
-def attendnace_avg(data):
-    total_attend = 0
-    total = 0
-    for attend in data.sessions:
-        try:
-            print attend.no_days_member_signed_the_register
-            total_attend += int(attend.no_days_member_signed_the_register)
-            print "hello"+total_attend
-        except:
-            total_attend += 0
-        try:
-            total += int(attend.total_sitting)
-        except:
-            total += 0
-        attend.session_avg = str(round((int(attend.no_days_member_signed_the_register)/float(attend.total_sitting))*100,2))
-        db.session.merge(attend)
-        db.session.commit()
-    data.total_avg = str(round((float(total_attend) / total)*100, 2))
-    db.session.merge(data)
-    db.session.commit()
-
 @app.route('/person/<id>',methods=['GET','POST'])
 def person(id):
 	member = MemberDetails.get_member(int(id))
